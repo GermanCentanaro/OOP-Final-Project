@@ -1,6 +1,6 @@
 @startuml
 Class Usuario{
-    +Ingresa()
+    +Ingresar()
 }
 
 Class Foto{
@@ -26,8 +26,15 @@ Class Planta{
     +describir():str
 }
 
-Usuario -- Foto:se ingresa en
+Class Historial{
+    +nombre_planta:str
+    +fotos:list[Foto]
+}
+
+Usuario"1" -- Foto:se ingresa en
 Planta -- Programa
 Programa"1..*" *-- "1"Foto
+Historial *-- Planta:se guarda en
+Usuario --* Historial:tiene acceso
 
 @enduml
