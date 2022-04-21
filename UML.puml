@@ -1,0 +1,33 @@
+@startuml
+Class Usuario{
+    +Ingresa()
+}
+
+Class Foto{
+    +Ingresar()
+    +Cancelar()
+}
+
+Class Programa{
+    +lista:List[foto]
+    +Clasificar(Planta)
+    +Cancelar()
+}
+
+Class Planta{
+    +color_petalo:str
+    +largo_petalo:str
+    +color_tallo:str
+    +largo_tallo:str
+    +color:str
+    +nombre_planta:str
+    +color_hojas:str
+    +fruto:str
+    +describir():str
+}
+
+Usuario -- Foto:se ingresa en
+Planta -- Programa
+Programa"1..*" *-- "1"Foto
+
+@enduml
