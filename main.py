@@ -25,9 +25,14 @@ class Foto:
         pass
 
 class Programa:
-    def __init__(self, ):
+    def __init__():
         pass
 
+class Historial:
+    def __init__(self, nombre_planta, list_fotos):
+        self.nombre_planta = nombre_planta
+        self.fotos = list_fotos
+	
 import requests
 import json
 from pprint import pprint
