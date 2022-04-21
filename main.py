@@ -33,30 +33,35 @@ import json
 from pprint import pprint
 import numpy as np
 
-link = np.array()
+from PIL import Image
+from io import BytesIO
+
+link = []
 
 print("Ingresar el número de fotos que introduciran:")
 nfotos = int(input())
-for i in range(1, nfotos):
+for i in range(0, nfotos):
     print("Introduzca el link de la foto:")
-    link[i] = input()
+    link.append(input())
 
 API_KEY = "2b10M05lpZpn9sMMrQmb8xeLlu"
 api_endpoint = f"https://my-api.plantnet.org/v2/identify/all?api-key={API_KEY}"
 
 if (nfotos == 1):
-    image_path_1 = link[1]
-    image_data_1 = open(image_path_1, 'rb')
+    image_path_1 = link[0]
+    response = requests.get(image_path_1)
+    image_data_1 = Image.open(BytesIO(response.content))
+
 
     files = [
 		('images', (image_path_1, image_data_1))
     ]
 
 elif (nfotos == 2):
-    image_path_1 = link[1]
+    image_path_1 = link[0]
     image_data_1 = open(image_path_1, 'rb')
     
-    image_path_2 = link[2]
+    image_path_2 = link[1]
     image_data_2 = open(image_path_2, 'rb')
 
     files = [
@@ -66,13 +71,13 @@ elif (nfotos == 2):
 
 
 elif (nfotos == 3):
-    image_path_1 = link[1]
+    image_path_1 = link[0]
     image_data_1 = open(image_path_1, 'rb')
     
-    image_path_2 = link[2]
+    image_path_2 = link[1]
     image_data_2 = open(image_path_2, 'rb')
     
-    image_path_3 = link[3]
+    image_path_3 = link[2]
     image_data_3 = open(image_path_2, 'rb')
 
     files = [
@@ -82,16 +87,16 @@ elif (nfotos == 3):
     ]
 
 elif (nfotos == 4):
-    image_path_1 = link[1]
+    image_path_1 = link[0]
     image_data_1 = open(image_path_1, 'rb')
     
-    image_path_2 = link[2]
+    image_path_2 = link[1]
     image_data_2 = open(image_path_2, 'rb')
     
-    image_path_3 = link[3]
+    image_path_3 = link[2]
     image_data_3 = open(image_path_2, 'rb')
     
-    image_path_4 = link[4]
+    image_path_4 = link[3]
     image_data_4 = open(image_path_2, 'rb')
 
     files = [
@@ -102,19 +107,19 @@ elif (nfotos == 4):
     ]
     
 elif (nfotos == 5):
-    image_path_1 = link[1]
+    image_path_1 = link[0]
     image_data_1 = open(image_path_1, 'rb')
     
-    image_path_2 = link[2]
+    image_path_2 = link[1]
     image_data_2 = open(image_path_2, 'rb')
     
-    image_path_3 = link[3]
+    image_path_3 = link[2]
     image_data_3 = open(image_path_2, 'rb')
     
-    image_path_4 = link[4]
+    image_path_4 = link[3]
     image_data_4 = open(image_path_2, 'rb')
     
-    image_path_5 = link[5]
+    image_path_5 = link[4]
     image_data_5 = open(image_path_2, 'rb')
 
     files = [
