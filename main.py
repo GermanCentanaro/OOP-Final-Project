@@ -55,8 +55,11 @@ api_endpoint = f"https://my-api.plantnet.org/v2/identify/all?api-key={API_KEY}"
 if (nfotos == 1):
     image_path_1 = link[0]
     response = requests.get(image_path_1)
-    image_data_1 = Image.open(BytesIO(response.content))
+    image_data_1 = open("image.ico", "wb").write(response.content)
 
+    data = {
+    	'organs': ['flower', 'leaf']
+    }
 
     files = [
 		('images', (image_path_1, image_data_1))
@@ -64,10 +67,16 @@ if (nfotos == 1):
 
 elif (nfotos == 2):
     image_path_1 = link[0]
-    image_data_1 = open(image_path_1, 'rb')
+    response = requests.get(image_path_1)
+    image_data_1 = open("image.ico", "wb").write(response.content)
     
     image_path_2 = link[1]
-    image_data_2 = open(image_path_2, 'rb')
+    response = requests.get(image_path_2)
+    image_data_2 = open("image.ico", "wb").write(response.content)
+
+    data = {
+    	'organs': ['flower', 'leaf']
+    }
 
     files = [
 		('images', (image_path_1, image_data_1)),
@@ -83,7 +92,7 @@ elif (nfotos == 3):
     image_data_2 = open(image_path_2, 'rb')
     
     image_path_3 = link[2]
-    image_data_3 = open(image_path_2, 'rb')
+    image_data_3 = open(image_path_3, 'rb')
 
     files = [
 		('images', (image_path_1, image_data_1)),
@@ -99,10 +108,10 @@ elif (nfotos == 4):
     image_data_2 = open(image_path_2, 'rb')
     
     image_path_3 = link[2]
-    image_data_3 = open(image_path_2, 'rb')
+    image_data_3 = open(image_path_3, 'rb')
     
     image_path_4 = link[3]
-    image_data_4 = open(image_path_2, 'rb')
+    image_data_4 = open(image_path_4, 'rb')
 
     files = [
 		('images', (image_path_1, image_data_1)),
@@ -119,13 +128,13 @@ elif (nfotos == 5):
     image_data_2 = open(image_path_2, 'rb')
     
     image_path_3 = link[2]
-    image_data_3 = open(image_path_2, 'rb')
+    image_data_3 = open(image_path_3, 'rb')
     
     image_path_4 = link[3]
-    image_data_4 = open(image_path_2, 'rb')
+    image_data_4 = open(image_path_4, 'rb')
     
     image_path_5 = link[4]
-    image_data_5 = open(image_path_2, 'rb')
+    image_data_5 = open(image_path_5, 'rb')
 
     files = [
 		('images', (image_path_1, image_data_1)),
@@ -134,10 +143,6 @@ elif (nfotos == 5):
         ('images', (image_path_4, image_data_4)),
         ('images', (image_path_5, image_data_5))
     ]
-
-data = {
-	'organs': ['flower', 'leaf']
-}
 
 req = requests.Request('POST', url=api_endpoint, files=files, data=data)
 prepared = req.prepare()
