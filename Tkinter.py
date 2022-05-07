@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter.font import BOLD, Font
+from tkinter import filedialog
 
 ventana = Tk()
 ventana.geometry("500x500")
@@ -9,6 +10,10 @@ ventana.configure(bg='green')
 def saludo():
     print("Xd")
     titulolbl.configure(text = "hola")
+
+def abrir_archivo():
+  archivo = filedialog.askopenfilename(title="Abrir Archivo", initialdir = "C:/", filetypes = (("Archivos jpg", "*.jpg"), ("Archivos png", "*.png"), ("Archivos jpeg", "*.jpeg")))
+  print(archivo)
 
 fuente = Font(family="Roboto Cn", size=14)
 
@@ -22,5 +27,8 @@ instruc.pack()
 
 boton = Button(ventana, text = "Ingresar", command = saludo)
 boton.pack()
+
+botonarchivo = Button(ventana, text="Abrir Archivo", command = abrir_archivo)
+botonarchivo.pack
 
 ventana.mainloop()
