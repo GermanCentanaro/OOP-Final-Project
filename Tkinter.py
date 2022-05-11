@@ -9,31 +9,36 @@ ventana_eleccion.title("From Data to Species")
 ventana_eleccion.configure(bg='green')
 
 def nueva_ventana(num_fotos):
+  cont=0
+
   ventana = Toplevel(ventana_eleccion)
   ventana.geometry("500x500")
   ventana.title("From Data to Species")
   ventana.configure(bg='green')
 
-  titulolbl = Label(ventana, text = "From Data to Species",font = fuentetitulo )
+  if(num_fotos == 1):
+    pass
+
+  titulolbl = Label(ventana, text = "From Data to Species",font = fuentetitulo, bg='green')
   titulolbl.pack()
 
-  instruc = Label(ventana, text = "Ingrese una foto para analizar el tipo de planta de la foto", font = fuente)
+  instruc = Label(ventana, text = "Ingrese una foto para analizar el tipo de planta de la foto", font = fuente, bg='green')
   instruc.pack()
 
   def leer_link():
-    ola = link.get()
-    print(ola)
+    link= link_entrada.get()
+    print(link)
 
   # Crear caja de texto.
-  link = ttk.Entry(ventana, width=50)
+  link_entrada = ttk.Entry(ventana, width=50)
   # Posicionarla en la ventana.
-  link.place(x=50, y=100)
+  link_entrada.place(x=50, y=100)
 
   botonlink = Button(ventana, text ="Ingresar link", command= leer_link)
   botonlink.place(x=80, y=125)
 
   botonarchivo = Button(ventana, text="Abrir Archivo", command = abrir_archivo)
-  botonarchivo.pack()
+  botonarchivo.place(x=220, y=300)
 
   cerrar = Button(ventana, text="Cerrar", command=closewindow)
   cerrar.place(x=220,y=450)
@@ -77,10 +82,10 @@ fuente = Font(family="Roboto Cn", size=14)
 
 fuentetitulo = Font(family="Roboto Cn", size=18, weight= "bold")
 
-titulolbl = Label(ventana_eleccion, text = "From Data to Species",font = fuentetitulo )
+titulolbl = Label(ventana_eleccion, text = "From Data to Species",font = fuentetitulo, bg='green' )
 titulolbl.pack()
 
-instruc = Label(ventana_eleccion, text = "Cantidad de fotos", font = fuente)
+instruc = Label(ventana_eleccion, text = "Cantidad de fotos", font = fuente, bg='green')
 instruc.pack()
 
 boton_1=Button(text="1", command = num1, width=10)
