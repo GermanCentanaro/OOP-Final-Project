@@ -35,15 +35,18 @@ def nueva_ventana(num_fotos):
   botonarchivo = Button(ventana, text="Abrir Archivo", command = abrir_archivo)
   botonarchivo.pack()
 
+  cerrar = Button(ventana, text="Cerrar", command=closewindow)
+  cerrar.place(x=220,y=450)
+
   ventana.mainloop
   #ventana_eleccion.destroy()
 
+def closewindow():
+  ventana_eleccion.destroy()
 
 def abrir_archivo():
   archivo = filedialog.askopenfilename(title="Abrir Archivo", initialdir = "C:/", filetypes = (("Archivos jpg", "*.jpg"), ("Archivos png", "*.png"), ("Archivos jpeg", "*.jpeg")))
   print(archivo)
-
-
 
 def num1():
   num_fotos = 1
