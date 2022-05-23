@@ -6,113 +6,143 @@ from tkinter import ttk
 from turtle import color
 from PIL import Image
 
-ventana_eleccion = Tk()
-ventana_eleccion.geometry("300x300")
-ventana_eleccion.title("From Data to Species")
-ventana_eleccion.configure(bg='green')
+class VentanaCantidad:
 
-def nueva_ventana(num_fotos):
-  cont=0
+    def __init__(self):
+        self.ventana_eleccion = Tk()
+        self.fuente = Font(family="Roboto Cn", size=14)
+        self.fuente2 = Font(family = "Roboto Cn", size=12)
+        self.fuentetitulo = Font(family="Roboto Cn", size=18, weight= "bold")
+        self.definir_ventana()        
 
-  ventana = Toplevel(ventana_eleccion)
-  ventana.geometry("500x500")
-  ventana.title("From Data to Species")
-  ventana.configure(bg='green')
+    def run(self):
+        self.ventana_eleccion.mainloop()
 
-  if(num_fotos == 1):
-    pass
+    def definir_ventana(self):
+        self.ventana_eleccion.geometry("300x300")
+        self.ventana_eleccion.title("From Data to Species")
+        self.ventana_eleccion.configure(bg='green')
 
-  titulolbl = Label(ventana, text = "From Data to Species",font = fuentetitulo, bg='green')
-  titulolbl.pack()
+        titulolbl = Label(self.ventana_eleccion, text = "From Data to Species",font = self.fuentetitulo, bg='green' )
+        titulolbl.pack()
 
-  instruc = Label(ventana, text = "Ingrese una foto para analizar el tipo de planta de la foto", font = fuente, bg='green')
-  instruc.pack()
+        instruc = Label(self.ventana_eleccion, text = "Cantidad de fotos", font = self.fuente, bg='green')
+        instruc.pack()
 
-  link_entrada = Entry(ventana, width=70)
-  link_entrada.pack()
+        boton_1=Button(text="1", command = self.num1, width=10)
+        boton_1.place(x=110, y=70)
 
-  def leer_link():
-    link= link_entrada.get()
-    link_entrada.delete(0,END)
-    print(link)
+        boton_2=Button(text="2", command = self.num2, width=10)
+        boton_2.place(x=110, y=110)
 
-  botonlink = Button(ventana, text ="Ingresar link", command= leer_link)
-  botonlink.place(x=200, y=90)
+        boton_3=Button(text="3", command = self.num3, width=10)
+        boton_3.place(x=110,y=150)
 
-  #otraopcion = Label(ventana, text = "Otra opción", font = fuente, bg='green')
-  #otraopcion.pack()
+        boton_4=Button(text="4", command = self.num4, width=10)
+        boton_4.place(x=110, y=190)
 
-  parte_label = Label(ventana, text = "Escriba la parte de la plante en específico de la que va a ingresar foto", font = fuente, bg = 'green')
-  parte_label.place(x=60, y=310)
+        boton_5=Button(text="5", command = self.num5, width=10)
+        boton_5.place(x=110, y=230)
+    
+    def num1(self):
+        num_fotos = 1
+        self.ventana_eleccion.destroy()
+        VentanaEjecucion(num_fotos)
+        
 
-  parte_planta = Entry(ventana, width=40)
-  parte_planta.place(x=60, y=300)
+    def num2(self):
+        num_fotos = 2
+        self.ventana_eleccion.destroy()
+        VentanaEjecucion(num_fotos)
+        
 
-  botonarchivo = Button(ventana, text="Abrir Archivo", command = abrir_archivo)
-  botonarchivo.place(x=210, y=170)
+    def num3(self):
+        num_fotos = 3
+        self.ventana_eleccion.destroy()
+        VentanaEjecucion(num_fotos)
+        
 
-  cerrar = Button(ventana, text="Cerrar", command=closewindow)
-  cerrar.place(x=220,y=450)
+    def num4(self):
+        num_fotos = 4
+        self.ventana_eleccion.destroy()
+        VentanaEjecucion(num_fotos)
+        
 
-  ventana.mainloop
-  #ventana_eleccion.destroy()
+    def num5(self):
+        num_fotos = 5
+        self.ventana_eleccion.destroy()
+        VentanaEjecucion(num_fotos)
 
-def closewindow():
-  ventana_eleccion.destroy()
 
-def abrir_archivo():
-  archivo = filedialog.askopenfilename(title="Abrir Archivo", initialdir = "C:/", filetypes = (("Archivos jpg", "*.jpg"), ("Archivos png", "*.png"), ("Archivos jpeg", "*.jpeg")))
-  im = Image.open(archivo)
-  im.show()
+class VentanaEjecucion:
+    def __init__(self, num_fotos):
+        self.num_fotos = num_fotos
+        self.cont = 0
+        self.ventana = Tk()
+        self.fuente = Font(family="Roboto Cn", size=14)
+        self.fuente2 = Font(family = "Roboto Cn", size=12)
+        self.fuentetitulo = Font(family="Roboto Cn", size=18, weight= "bold")
+        self.definir_ventana_ejecucion()
 
-def num1():
-  num_fotos = 1
-  nueva_ventana(num_fotos)
-  ventana_eleccion.withdraw()
+    def run(self):
+        self.ventana.mainloop()
 
-def num2():
-  num_fotos = 2
-  nueva_ventana(num_fotos)
-  ventana_eleccion.withdraw()
+    def definir_ventana_ejecucion(self):
+        self.ventana.geometry("500x500")
+        self.ventana.title("From Data to Species")
+        self.ventana.configure(bg='green')
 
-def num3():
-  num_fotos = 3
-  nueva_ventana(num_fotos)
-  ventana_eleccion.withdraw()
+        titulolbl = Label(self.ventana, text = "From Data to Species",font = self.fuentetitulo, bg='green')
+        titulolbl.pack()
 
-def num4():
-  num_fotos = 4
-  nueva_ventana(num_fotos)
-  ventana_eleccion.withdraw()
+        instruc = Label(self.ventana, text = "Ingrese una foto para analizar el tipo de planta de la foto", font = self.fuente, bg='green')
+        instruc.pack()
 
-def num5():
-  num_fotos = 5
-  nueva_ventana(num_fotos)
-  ventana_eleccion.withdraw()
+        self.link_entrada = Entry(self.ventana, width=70)
+        self.link_entrada.pack()
 
-fuente = Font(family="Roboto Cn", size=14)
+        otraopcion = Label(self.ventana, text = "Otra opción", font = self.fuente, bg='green')
+        otraopcion.place(x=200, y=100)
 
-fuentetitulo = Font(family="Roboto Cn", size=18, weight= "bold")
+        botonarchivo = Button(self.ventana, text="Abrir Archivo", command = lambda: self.abrir_archivo(None))
+        botonarchivo.place(x=210, y=140)
 
-titulolbl = Label(ventana_eleccion, text = "From Data to Species",font = fuentetitulo, bg='green' )
-titulolbl.pack()
+        parte_label = Label(self.ventana, text = "Escriba la parte de la plante en específico de la que va a ingresar foto", font = self.fuente2, bg = 'green')
+        parte_label.place(x=10, y=180)
 
-instruc = Label(ventana_eleccion, text = "Cantidad de fotos", font = fuente, bg='green')
-instruc.pack()
+        self.parte_planta = Entry(self.ventana, width=40)
+        self.parte_planta.place(x=130, y=210)  
 
-boton_1=Button(text="1", command = num1, width=10)
-boton_1.place(x=110, y=70)
+        botonlink = Button(self.ventana, text ="Ingresar", command=lambda: self.leer_link(None), width=12)
+        botonlink.place(x=200, y=290)
 
-boton_2=Button(text="2", command = num1, width=10)
-boton_2.place(x=110, y=110)
+        contadorlabel = Label(self.ventana, text = "Fotos ingresadas:" , font = self.fuente2, bg = 'green')
+        contadorlabel.place(x=10, y=400)
 
-boton_3=Button(text="3", command = num1, width=10)
-boton_3.place(x=110,y=150)
+        cerrar = Button(self.ventana, text="Cerrar", command=self.closewindow)
+        cerrar.place(x=220,y=450)
 
-boton_4=Button(text="4", command = num1, width=10)
-boton_4.place(x=110, y=190)
+    def abrir_archivo(self):
+        archivo = filedialog.askopenfilename(title="Abrir Archivo", initialdir = "C:/", filetypes = (("Archivos jpg", "*.jpg"), ("Archivos png", "*.png"), ("Archivos jpeg", "*.jpeg")))
+        #im = Image.open(archivo)
+        #im.show()
 
-boton_5=Button(text="5", command = num1, width=10)
-boton_5.place(x=110, y=230)
+        parte= self.parte_planta.get()
+        self.parte_planta.delete(0,END)
+        print(parte)
 
-ventana_eleccion.mainloop()
+    def leer_link(self):
+        link= self.link_entrada.get()
+        self.link_entrada.delete(0,END)
+        print(link)
+
+        parte= self.parte_planta.get()
+        self.parte_planta.delete(0,END)
+        print(parte)
+        cont = cont+1
+
+    def closewindow(self):
+        self.ventana.destroy()
+
+object = VentanaCantidad()
+object.run()
