@@ -1,0 +1,2 @@
+listaarchivo = []
+listaparte = []
