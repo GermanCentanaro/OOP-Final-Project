@@ -5,6 +5,8 @@ from tkinter import filedialog
 from tkinter import ttk
 from turtle import color
 from PIL import Image
+from analisis import Proceso
+from listas import *
 
 class VentanaCantidad:
 
@@ -112,8 +114,8 @@ class VentanaEjecucion:
         botonlink = Button(self.ventana, text ="Ingresar", command=lambda: self.leer_link(), width=12)
         botonlink.place(x=200, y=290)
 
-        contadorlabel = Label(self.ventana, text = "Fotos ingresadas: "+ str(self.cont) , font = self.fuente2, bg = 'green')
-        contadorlabel.place(x=10, y=400)
+        self.contadorlabel = Label(self.ventana, text = "Fotos ingresadas: "+ str(self.cont) , font = self.fuente2, bg = 'green')
+        self.contadorlabel.place(x=10, y=400)
 
         self.infolabel = Label(self.ventana, text = "Info", font = self.fuente2, bg ='green')
         self.infolabel.place(x=60, y= 350)
@@ -127,15 +129,21 @@ class VentanaEjecucion:
                 archivo = filedialog.askopenfilename(title="Abrir Archivo", initialdir = "C:/", filetypes = (("Archivos jpg", "*.jpg"), ("Archivos png", "*.png"), ("Archivos jpeg", "*.jpeg")))
                 #im = Image.open(archivo)
                 #im.show()
+                listaarchivo.append(archivo)
             
                 parte= self.parte_planta.get()
                 self.parte_planta.delete(0,END)
-                print(parte)
                 self.cont = self.cont + 1
+                self.contadorlabel['text'] = "Fotos ingresadas: "+ str(self.cont)
+                listaparte.append(parte)
+                if(self.cont == self.num_fotos):
+                    Proceso.hacer(self.num_fotos)
             else:
                 self.infolabel['text'] = "Debe ingresar la parte de la planta"
         else:
             self.infolabel['text'] = "No puede ingresar mas fotos"
+            
+            
 
     def leer_link(self):
         if(self.cont < self.num_fotos):
@@ -144,14 +152,17 @@ class VentanaEjecucion:
                 link= self.link_entrada.get()
                 self.link_entrada.delete(0,END)
                 print(link)
+                listaarchivo.append(link)
 
                 parte= self.parte_planta.get()
                 self.parte_planta.delete(0,END)
                 print(parte)
                 self.cont = self.cont+1
+                listaparte.append(parte)
             else:
                 self.infolabel['text'] = "Asegúrese bien de llenar el link y la parte de la planta"           
         else:
+
             self.infolabel['text'] = "No puede ingresar mas fotos"
 
     def closewindow(self):
