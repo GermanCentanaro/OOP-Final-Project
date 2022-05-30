@@ -5,7 +5,7 @@ from tkinter import filedialog
 from tkinter import ttk
 from turtle import color
 from PIL import Image
-from backup_analisis import Proceso
+from analisis import Proceso
 from listas import *
 from german import *
 
@@ -191,7 +191,6 @@ class VentanaCantidad:
         num_fotos = 5
         self.ventana_eleccion.destroy()
         VentanaEjecucion(num_fotos)
-
 
 class VentanaEjecucion:
     def __init__(self, num_fotos):
