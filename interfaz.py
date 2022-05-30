@@ -266,15 +266,17 @@ class VentanaEjecucion:
                 archivo = filedialog.askopenfilename(title="Abrir Archivo", initialdir = "C:/", filetypes = (("Archivos jpg", "*.jpg"), ("Archivos png", "*.png"), ("Archivos jpeg", "*.jpeg")))
                 #im = Image.open(archivo)
                 #im.show()
-                
-                parte= self.lista_desplegable.get()
-                foto = Foto(archivo, parte)
-                listaarchivo.append(foto.path)
-                self.cont = self.cont + 1
-                self.contadorlabel['text'] = "Fotos ingresadas: "+ str(self.cont)
-                listaparte.append(foto.parte)
-                if(self.cont == self.num_fotos):
-                    Proceso.hacer(self.num_fotos)
+                if(archivo != ""):               
+                    parte= self.lista_desplegable.get()
+                    foto = Foto(archivo, parte)
+                    listaarchivo.append(foto.path)
+                    self.cont = self.cont + 1
+                    self.contadorlabel['text'] = "Fotos ingresadas: "+ str(self.cont)
+                    listaparte.append(foto.parte)
+                    if(self.cont == self.num_fotos):
+                        Proceso.hacer(self.num_fotos)
+                else:
+                    self.infolabel['text'] = "No fue ingresada la foto, intente de nuevo"
             else:
                 self.infolabel['text'] = "Debe ingresar la parte de la planta"
         else:
