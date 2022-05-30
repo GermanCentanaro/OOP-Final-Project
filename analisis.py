@@ -3,6 +3,7 @@ import requests
 import json
 from pprint import pprint
 from listas import *
+from german import *
 
 class Proceso:
   def hacer(num_fotos):
@@ -11,17 +12,17 @@ class Proceso:
     
     if(num_fotos == 1):
       ruta1 = listaarchivo[0]
-      #ruta1 = ("D:/Universidad/SEMESTRE III/Programación Orientada a Objetos/POO/Projecto Final/flower" + ".jpeg")
       image_path_1 = ruta1
       image_data_1 = open(image_path_1, 'rb')
-
+      
       data = {
-        'organs': ['flower']
+        'organs': []
       }
-
+      
       files = [
         ('images', (image_path_1, image_data_1))
       ]
+    
     elif(num_fotos == 2):
       ruta1 = listaarchivo[0]
       ruta2 = listaarchivo[1]
@@ -33,7 +34,7 @@ class Proceso:
       image_data_2 = open(image_path_2, 'rb')
 
       data = {
-        'organs': ['leaf', 'flower']
+        'organs': []
       }
 
       files = [
@@ -55,7 +56,7 @@ class Proceso:
       image_data_3 = open(image_path_3, 'rb')
 
       data = {
-        'organs': [listaparte[0], listaparte[1], listaparte[2]]
+        'organs': []
       }
 
       files = [
@@ -82,7 +83,7 @@ class Proceso:
       image_data_4 = open(image_path_4, 'rb')
 
       data = {
-        'organs': [listaparte[0], listaparte[1], listaparte[2], listaparte[3]]
+        'organs': []
       }
 
       files = [
@@ -114,7 +115,7 @@ class Proceso:
       image_data_5 = open(image_path_5, 'rb')
 
       data = {
-        'organs': [listaparte[1], listaparte[2], listaparte[3], listaparte[4], listaparte[5]]
+        'organs': []
       }
 
       files = [
@@ -125,15 +126,23 @@ class Proceso:
         ('images', (image_path_5, image_data_5))
       ]
 
-    #ruta2 = ("D:/Universidad/SEMESTRE III/Programación Orientada a Objetos/POO/Projecto Final/planta" + ".jpg")
-    # Cambiar rutas
-
     req = requests.Request('POST', url=api_endpoint, files=files, data=data)
     prepared = req.prepare()
 
     s = requests.Session()
     response = s.send(prepared)
     json_result = json.loads(response.text)
+    
 
     pprint(response.status_code)
-    pprint(json_result)
+    pprint(json_result)    
+
+    for each in json_result['results']:
+      listanombreplanta.append(each['species']['commonNames'][0])
+      listanombrecientifico.append(each['species']['scientificName'])
+      listapuntaje.append(each['score'])
+
+    print(listanombreplanta)
+    print(listanombrecientifico)
+    print(listapuntaje)
+    #pprint(species)
