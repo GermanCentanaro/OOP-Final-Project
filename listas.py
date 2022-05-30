@@ -1,2 +1,5 @@
 listaarchivo = []
 listaparte = []
+listanombreplanta = []
+listanombrecientifico = []
+listapuntaje=[]
