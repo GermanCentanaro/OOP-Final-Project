@@ -19,6 +19,6 @@ class Usuario:
     def Registrar(self, nombre, contraseña):
         archivo = open("usuarios.txt", "a")
 
-        archivo.write(nombre + "\t" + contraseña)
+        archivo.write(nombre + "\t" + contraseña +"\t" + "\n")
         print("\nUsuario ingresado con exito.\n")
         archivo.close
