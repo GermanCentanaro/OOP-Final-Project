@@ -3,7 +3,6 @@ import requests
 import json
 from pprint import pprint
 from listas import *
-from interfaz import VentanaEjecucion
 
 class Proceso:
   def hacer(num_fotos):
@@ -11,7 +10,6 @@ class Proceso:
     api_endpoint = f"https://my-api.plantnet.org/v2/identify/all?api-key={API_KEY}"
     
     if(num_fotos == 1):
-      ruta1 = VentanaEjecucion.reg.FotoI
       ruta1 = listaarchivo[0]
       image_path_1 = ruta1
       image_data_1 = open(image_path_1, 'rb')
@@ -133,10 +131,8 @@ class Proceso:
     s = requests.Session()
     response = s.send(prepared)
     json_result = json.loads(response.text)
-    
 
     pprint(response.status_code)
-    pprint(json_result)
 
     for each in json_result['results']:
       if(len(each['species']['commonNames']) == 0):
@@ -214,4 +210,3 @@ class Foto():
 	
 	def __str__(self):
 		return "Link: " + str(self.__ruta) + " - Data: " + str(self.__data)
-
