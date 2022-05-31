@@ -254,8 +254,8 @@ class VentanaEjecucion:
         #self.marco.config(width=480,height=320)
         self.marco.place(x=10, y =260)
 
-        xd = Label(self.marco, text="Aquí tendrá un resultado")
-        xd.pack()
+        self.resultadolbl = Label(self.marco, text="Aquí tendrá un resultado")
+        self.resultadolbl.pack()
        
         cerrar = Button(self.ventana, text="Cerrar", command=self.closewindow)
         cerrar.place(x=230,y=460)
@@ -275,6 +275,11 @@ class VentanaEjecucion:
                     listaparte.append(foto.parte)
                     if(self.cont == self.num_fotos):
                         Proceso.hacer(self.num_fotos)
+                        self.resultadolbl['text'] = ("El resultado mas cercano es: "+listanombreplanta[0]+
+                        "\nNombre cientifico: "+listanombrecientifico[0]+ "\n Porcentaje:" +(str(listapuntaje[0]*100))+
+                        " %\n\nSegundo resultado: "+listanombreplanta[1]+ "\nNombre cientifico: "+listanombrecientifico[1]+ 
+                        "\n Porcentaje:" +(str(listapuntaje[1]*100))+" %\n\nTercer resultado: "+listanombreplanta[2]+ 
+                        "\nNombre cientifico: "+listanombrecientifico[2]+ "\n Porcentaje:" +(str(listapuntaje[2]*100))+" %")
                 else:
                     self.infolabel['text'] = "No fue ingresada la foto, intente de nuevo"
             else:
