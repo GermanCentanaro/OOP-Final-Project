@@ -5,9 +5,8 @@ from tkinter import filedialog
 from tkinter import ttk
 from turtle import color
 from PIL import Image
-from analisis import Proceso
+from analisis import *
 from listas import *
-from german import *
 
 class VentanaInicioSesion:
     def __init__(self):
@@ -65,7 +64,7 @@ class VentanaInicioSesion:
     def registro(self):
         pass
 
-class Registro:
+class VentanaRegistrarse:
     def __init__(self):
         self.ventana_reg = Tk()
         self.fuente = Font(family="Roboto Cn", size=14)
@@ -118,83 +117,8 @@ class Registro:
     def registro(self):
         pass
 
-class VentanaCantidad:
-
-    def __init__(self):
-        self.ventana_eleccion = Tk()
-        self.fuente = Font(family="Roboto Cn", size=14)
-        self.fuente2 = Font(family = "Roboto Cn", size=12)
-        self.fuentetitulo = Font(family="Roboto Cn", size=18, weight= "bold")
-        self.definir_ventana()        
-
-    def run(self):
-        self.ventana_eleccion.mainloop()
-
-    def definir_ventana(self):
-        ancho_ventana = 300
-        alto_ventana = 300
-
-        x_ventana = self.ventana_eleccion.winfo_screenwidth() // 2 - ancho_ventana // 2
-        y_ventana = self.ventana_eleccion.winfo_screenheight() // 2 - alto_ventana // 2
-
-        posicion = str(ancho_ventana) + "x" + str(alto_ventana) + "+" + str(x_ventana) + "+" + str(y_ventana)
-        self.ventana_eleccion.geometry(posicion)
-
-        self.ventana_eleccion.resizable(0,0)
-
-        #self.ventana_eleccion.geometry("300x300")
-        self.ventana_eleccion.title("From Data to Species")
-        self.ventana_eleccion.configure(bg='green')
-
-        titulolbl = Label(self.ventana_eleccion, text = "From Data to Species",font = self.fuentetitulo, bg='green' )
-        titulolbl.pack()
-
-        instruc = Label(self.ventana_eleccion, text = "Cantidad de fotos", font = self.fuente, bg='green')
-        instruc.pack()
-
-        boton_1=Button(text="1", command = self.num1, width=10)
-        boton_1.place(x=110, y=70)
-
-        boton_2=Button(text="2", command = self.num2, width=10)
-        boton_2.place(x=110, y=110)
-
-        boton_3=Button(text="3", command = self.num3, width=10)
-        boton_3.place(x=110,y=150)
-
-        boton_4=Button(text="4", command = self.num4, width=10)
-        boton_4.place(x=110, y=190)
-
-        boton_5=Button(text="5", command = self.num5, width=10)
-        boton_5.place(x=110, y=230)
-    
-    def num1(self):
-        num_fotos = 1
-        self.ventana_eleccion.destroy()
-        VentanaEjecucion(num_fotos)
-        
-    def num2(self):
-        num_fotos = 2
-        self.ventana_eleccion.destroy()
-        VentanaEjecucion(num_fotos)
-        
-    def num3(self):
-        num_fotos = 3
-        self.ventana_eleccion.destroy()
-        VentanaEjecucion(num_fotos)
-        
-    def num4(self):
-        num_fotos = 4
-        self.ventana_eleccion.destroy()
-        VentanaEjecucion(num_fotos)
-        
-    def num5(self):
-        num_fotos = 5
-        self.ventana_eleccion.destroy()
-        VentanaEjecucion(num_fotos)
-
 class VentanaEjecucion:
-    def __init__(self, num_fotos):
-        self.num_fotos = num_fotos
+    def __init__(self):
         self.cont = 0
         self.ventana = Tk()
         self.fuente = Font(family="Roboto Cn", size=14)
@@ -239,12 +163,15 @@ class VentanaEjecucion:
         botonlabel.pack()
 
         botonarchivo = Button(self.ventana, text="Abrir Archivo", command = lambda: self.abrir_archivo())
-        botonarchivo.pack()     
+        botonarchivo.pack()
+
+        botonresultado = Button(self.ventana, text = "Encontrar resultado", command = lambda: self.procesar())
+        botonresultado.place(x=200, y=180)
 
         #self.parte_planta = Entry(self.ventana, width=40)
         #self.parte_planta.place(x=130, y=210)
 
-        self.infolabel = Label(self.ventana, text = "Info", font = self.fuente2, bg ='green')
+        self.infolabel = Label(self.ventana, text = "", font = self.fuente2, bg ='green')
         self.infolabel.place(x=60, y= 190)
 
         self.contadorlabel = Label(self.ventana, text = "Fotos ingresadas: "+ str(self.cont) , font = self.fuente2, bg = 'green')
@@ -261,33 +188,39 @@ class VentanaEjecucion:
         cerrar.place(x=230,y=460)
 
     def abrir_archivo(self):
-        if(self.cont < self.num_fotos):
+        if(self.cont < 5):
             if(self.lista_desplegable.get() != ""):
                 archivo = filedialog.askopenfilename(title="Abrir Archivo", initialdir = "C:/", filetypes = (("Archivos jpg", "*.jpg"), ("Archivos png", "*.png"), ("Archivos jpeg", "*.jpeg")))
-                #im = Image.open(archivo)
-                #im.show()
-                if(archivo != ""):               
+                if(archivo != ""):
                     parte= self.lista_desplegable.get()
-                    foto = Foto(archivo, parte)
-                    listaarchivo.append(foto.path)
+                    self.reg = Registro()
+                    foto = Foto(archivo)
+                    self.reg.añadir(foto)
+                    listaarchivo.append(archivo)
+                    listaparte.append(parte)
                     self.cont = self.cont + 1
                     self.contadorlabel['text'] = "Fotos ingresadas: "+ str(self.cont)
-                    listaparte.append(foto.parte)
-                    if(self.cont == self.num_fotos):
-                        Proceso.hacer(self.num_fotos)
-                        self.resultadolbl['text'] = ("El resultado mas cercano es: "+listanombreplanta[0]+
-                        "\nNombre cientifico: "+listanombrecientifico[0]+ "\n Porcentaje:" +(str(listapuntaje[0]*100))+
-                        " %\n\nSegundo resultado: "+listanombreplanta[1]+ "\nNombre cientifico: "+listanombrecientifico[1]+ 
-                        "\n Porcentaje:" +(str(listapuntaje[1]*100))+" %\n\nTercer resultado: "+listanombreplanta[2]+ 
-                        "\nNombre cientifico: "+listanombrecientifico[2]+ "\n Porcentaje:" +(str(listapuntaje[2]*100))+" %")
-                else:
-                    self.infolabel['text'] = "No fue ingresada la foto, intente de nuevo"
             else:
                 self.infolabel['text'] = "Debe ingresar la parte de la planta"
         else:
             self.infolabel['text'] = "No puede ingresar mas fotos"
+                    
+    def procesar(self):
+        if(self.cont == 0):
+            self.infolabel['text'] = "No ha ingresado ninguna foto"
+        else:
+            Proceso.hacer(self.cont)
+            res = ("El resultado mas cercano es: "+listanombreplanta[0]+
+            "\nNombre cientifico: "+listanombrecientifico[0]+ "\n Porcentaje:" +(str(listapuntaje[0]*100))+
+            " %\n\nSegundo resultado: "+listanombreplanta[1]+ "\nNombre cientifico: "+listanombrecientifico[1]+ 
+            "\n Porcentaje:" +(str(listapuntaje[1]*100))+" %\n\nTercer resultado: "+listanombreplanta[2]+ 
+            "\nNombre cientifico: "+listanombrecientifico[2]+ "\n Porcentaje:" +(str(listapuntaje[2]*100))+" %")
+            
+            self.reg.resultado = res
+            self.resultadolbl['text'] = self.reg.resultado
+
 
     def closewindow(self):
         self.ventana.destroy()
 
-Aplicacion = VentanaCantidad()
+Aplicacion = VentanaEjecucion()
