@@ -135,10 +135,14 @@ class Proceso:
     
 
     pprint(response.status_code)
-    pprint(json_result)    
+    pprint(json_result)
 
     for each in json_result['results']:
-      listanombreplanta.append(each['species']['commonNames'][0])
+      if(len(each['species']['commonNames']) == 0):
+        listanombreplanta.append("Nombre no identificado")
+      else:
+        listanombreplanta.append(each['species']['commonNames'][0])
+
       listanombrecientifico.append(each['species']['scientificName'])
       listapuntaje.append(each['score'])
 
