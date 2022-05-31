@@ -7,6 +7,7 @@ from turtle import color
 from PIL import Image
 from analisis import *
 from listas import *
+from usuario import *
 
 class VentanaInicioSesion:
     def __init__(self):
@@ -14,11 +15,14 @@ class VentanaInicioSesion:
         self.fuente = Font(family="Roboto Cn", size=14)
         self.fuente2 = Font(family = "Roboto Cn", size=12)
         self.fuentetitulo = Font(family="Roboto Cn", size=18, weight= "bold")
-        self.definir_ventana() 
+        self.definir_ventana()
+
+    def run(self):
+        self.ventana_inicio.mainloop()
 
     def definir_ventana(self):
-        ancho_ventana = 300
-        alto_ventana = 800
+        ancho_ventana = 500
+        alto_ventana = 300
 
         x_ventana = self.ventana_inicio.winfo_screenwidth() // 2 - ancho_ventana // 2
         y_ventana = self.ventana_inicio.winfo_screenheight() // 2 - alto_ventana // 2
@@ -37,13 +41,13 @@ class VentanaInicioSesion:
         usuariolbl = Label(self.ventana_inicio, text = "Usuario:", font = self.fuente, bg='green')
         usuariolbl.pack()
 
-        self.usuario_text = Entry(self.ventana_inicio, width = 40)
+        self.usuario_text = Entry(self.ventana_inicio, width = 50)
         self.usuario_text.pack()
 
-        contraseñalbl = Label(self.ventana_inicio, text ="Contraseña:", fornt=self.fuente, bg='green')
+        contraseñalbl = Label(self.ventana_inicio, text ="Contraseña:", font=self.fuente, bg='green')
         contraseñalbl.pack()
 
-        self.contraseña_text = Entry(self.ventana_inicio, width=40)
+        self.contraseña_text = Entry(self.ventana_inicio, width=50)
         self.contraseña_text.pack()
 
         self.infolbl = Label(self.ventana_inicio, text = "", font=self.fuente, bg ='green')
@@ -59,10 +63,25 @@ class VentanaInicioSesion:
         self.regbtn.pack()
 
     def iniciar(self):
-        pass
+        nombre= self.usuario_text.get()
+        contraseña = self.contraseña_text.get()
+        if(nombre == ""):
+            self.infolbl['text'] = "Ingrese un nombre"
+        elif(contraseña == ""):
+            self.infolbl['text'] = "Ingrese una contraseña"
+        else:
+            user = Usuario(None, nombre, contraseña)
+            x = user.Iniciar(nombre, contraseña)
+            if(x == False):
+                self.infolbl['text'] = "Usuario no registrado, vuelva a intentarlo"
+            else:
+                print("Ingreso realizado correctamente.\n")
+                self.ventana_inicio.destroy()
+                VentanaEjecucion()
 
     def registro(self):
-        pass
+        self.ventana_inicio.destroy()
+        VentanaRegistrarse()
 
 class VentanaRegistrarse:
     def __init__(self):
@@ -73,8 +92,8 @@ class VentanaRegistrarse:
         self.definir_ventana()
     
     def definir_ventana(self):
-        ancho_ventana = 300
-        alto_ventana = 800
+        ancho_ventana = 500
+        alto_ventana = 300
 
         x_ventana = self.ventana_reg.winfo_screenwidth() // 2 - ancho_ventana // 2
         y_ventana = self.ventana_reg.winfo_screenheight() // 2 - alto_ventana // 2
@@ -102,7 +121,7 @@ class VentanaRegistrarse:
         self.usuario_text = Entry(self.ventana_reg, width = 40)
         self.usuario_text.pack()
 
-        contraseñalbl = Label(self.ventana_reg, text ="Contraseña:", fornt=self.fuente, bg='green')
+        contraseñalbl = Label(self.ventana_reg, text ="Contraseña:", font=self.fuente, bg='green')
         contraseñalbl.pack()
 
         self.contraseña_text = Entry(self.ventana_reg, width=40)
@@ -111,11 +130,28 @@ class VentanaRegistrarse:
         self.infolbl = Label(self.ventana_reg, text = "", font=self.fuente, bg ='green')
         self.infolbl.pack()
 
-        self.regbtn = Button(self.ventana_inicio, text ="Registrarse", command = self.registro)
+        self.regbtn = Button(self.ventana_reg, text ="Registrarse", command = self.registro)
         self.regbtn.pack()
 
+        self.volverbtn = Button(self.ventana_reg, text = "Volver", command = self.volver)
+        self.volverbtn.pack()
+
     def registro(self):
-        pass
+        nombre= self.usuario_text.get()
+        contraseña = self.contraseña_text.get()
+        name = self.nombre_text.get()
+        if(nombre == ""):
+            self.infolbl['text'] = "Ingrese un nombre"
+        elif(contraseña == ""):
+            self.infolbl['text'] = "Ingrese una contraseña"
+        else:
+            user = Usuario(name, nombre, contraseña)
+            user.Registrar(nombre, contraseña)
+            self.infolbl['text'] = "Fue registrado exitosamente"
+
+    def volver(self):
+        self.ventana_reg.destroy()
+        VentanaInicioSesion()
 
 class VentanaEjecucion:
     def __init__(self):
@@ -131,7 +167,7 @@ class VentanaEjecucion:
 
     def definir_ventana_ejecucion(self):
         ancho_ventana = 510
-        alto_ventana = 510
+        alto_ventana = 600
 
         x_ventana = self.ventana.winfo_screenwidth() // 2 - ancho_ventana // 2
         y_ventana = self.ventana.winfo_screenheight() // 2 - alto_ventana // 2
@@ -179,13 +215,13 @@ class VentanaEjecucion:
 
         self.marco = ttk.Frame(self.ventana, borderwidth=2, relief="raised", padding=(10,10))
         #self.marco.config(width=480,height=320)
-        self.marco.place(x=10, y =260)
+        self.marco.place(x=10, y =240)
 
         self.resultadolbl = Label(self.marco, text="Aquí tendrá un resultado")
         self.resultadolbl.pack()
        
         cerrar = Button(self.ventana, text="Cerrar", command=self.closewindow)
-        cerrar.place(x=230,y=460)
+        cerrar.place(x=230,y=560)
 
     def abrir_archivo(self):
         if(self.cont < 5):
@@ -214,7 +250,10 @@ class VentanaEjecucion:
             "\nNombre cientifico: "+listanombrecientifico[0]+ "\n Porcentaje:" +(str(listapuntaje[0]*100))+
             " %\n\nSegundo resultado: "+listanombreplanta[1]+ "\nNombre cientifico: "+listanombrecientifico[1]+ 
             "\n Porcentaje:" +(str(listapuntaje[1]*100))+" %\n\nTercer resultado: "+listanombreplanta[2]+ 
-            "\nNombre cientifico: "+listanombrecientifico[2]+ "\n Porcentaje:" +(str(listapuntaje[2]*100))+" %")
+            "\nNombre cientifico: "+listanombrecientifico[2]+ "\n Porcentaje:" +(str(listapuntaje[2]*100))+" %\n\nCuarto resultado: "
+            +listanombreplanta[3]+ "\nNombre cientifico: "+listanombrecientifico[3]+ "\n Porcentaje:" +(str(listapuntaje[3]*100))+
+            " %\n\nCuarto resultado: "+listanombreplanta[4]+ "\nNombre cientifico: "+listanombrecientifico[4]+ 
+            "\n Porcentaje:" +(str(listapuntaje[4]*100))+" %")
             
             self.reg.resultado = res
             self.resultadolbl['text'] = self.reg.resultado
@@ -223,4 +262,4 @@ class VentanaEjecucion:
     def closewindow(self):
         self.ventana.destroy()
 
-Aplicacion = VentanaEjecucion()
+Aplicacion = VentanaInicioSesion()
