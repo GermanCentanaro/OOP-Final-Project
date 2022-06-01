@@ -1,10 +1,10 @@
-from operator import length_hint
 from tkinter import *
 from tkinter.font import BOLD, Font
 from tkinter import filedialog
 from tkinter import ttk
-from turtle import color
 from PIL import Image
+import requests
+import json
 from analisis import *
 from listas import *
 from usuario import *
@@ -166,7 +166,7 @@ class VentanaEjecucion:
         self.ventana.mainloop()
 
     def definir_ventana_ejecucion(self):
-        ancho_ventana = 510
+        ancho_ventana = 930
         alto_ventana = 600
 
         x_ventana = self.ventana.winfo_screenwidth() // 2 - ancho_ventana // 2
@@ -177,7 +177,6 @@ class VentanaEjecucion:
 
         self.ventana.resizable(0,0)
 
-        #self.ventana.geometry("510x510")
         self.ventana.title("From Data to Species")
         self.ventana.configure(bg='green')
 
@@ -202,24 +201,29 @@ class VentanaEjecucion:
         botonarchivo.pack()
 
         botonresultado = Button(self.ventana, text = "Encontrar resultado", command = lambda: self.procesar())
-        botonresultado.place(x=200, y=180)
-
-        #self.parte_planta = Entry(self.ventana, width=40)
-        #self.parte_planta.place(x=130, y=210)
+        botonresultado.pack()
 
         self.infolabel = Label(self.ventana, text = "", font = self.fuente2, bg ='green')
-        self.infolabel.place(x=60, y= 190)
+        self.infolabel.pack()
 
         self.contadorlabel = Label(self.ventana, text = "Fotos ingresadas: "+ str(self.cont) , font = self.fuente2, bg = 'green')
-        self.contadorlabel.place(x=10, y=210)
+        self.contadorlabel.pack()
 
         self.marco = ttk.Frame(self.ventana, borderwidth=2, relief="raised", padding=(10,10))
-        #self.marco.config(width=480,height=320)
         self.marco.place(x=10, y =240)
 
         self.resultadolbl = Label(self.marco, text="Aquí tendrá un resultado")
         self.resultadolbl.pack()
-       
+
+        self.marco2 = ttk.Frame(self.ventana, borderwidth = 2, relief = "raised", padding=(10,10))
+        self.marco2.place(x=480,y=240)
+
+        self.historial = Label(self.marco2, text="Aquí tendrá un resultado historial")
+        self.historial.pack()
+
+        cerrarsesion = Button(self.ventana, text= "Cerrar sesion", command = self.cerrarsesion)
+        cerrarsesion.place(x=150, y=560)
+
         cerrar = Button(self.ventana, text="Cerrar", command=self.closewindow)
         cerrar.place(x=230,y=560)
 
@@ -245,7 +249,7 @@ class VentanaEjecucion:
         if(self.cont == 0):
             self.infolabel['text'] = "No ha ingresado ninguna foto"
         else:
-            Proceso.hacer(self.cont)
+            procesoHacer(self.cont)
             res = ("El resultado mas cercano es: "+listanombreplanta[0]+
             "\nNombre cientifico: "+listanombrecientifico[0]+ "\n Porcentaje:" +(str(listapuntaje[0]*100))+
             " %\n\nSegundo resultado: "+listanombreplanta[1]+ "\nNombre cientifico: "+listanombrecientifico[1]+ 
@@ -254,12 +258,173 @@ class VentanaEjecucion:
             +listanombreplanta[3]+ "\nNombre cientifico: "+listanombrecientifico[3]+ "\n Porcentaje:" +(str(listapuntaje[3]*100))+
             " %\n\nCuarto resultado: "+listanombreplanta[4]+ "\nNombre cientifico: "+listanombrecientifico[4]+ 
             "\n Porcentaje:" +(str(listapuntaje[4]*100))+" %")
-            
+
+            res2 = ("El resultado mas cercano es: "+listanombreplanta[0]+
+            "\nNombre cientifico: "+listanombrecientifico[0]+ "\n Porcentaje:" +(str(listapuntaje[0]*100)))
+            listaresultados.append(res2)
+            print(listaresultados)
             self.reg.resultado = res
             self.resultadolbl['text'] = self.reg.resultado
+            imprimir = ""
 
+            for l in listaresultados:
+              imprimir = imprimir+l+"\n"
+            
+            self.historial['text'] = imprimir
+
+    def cerrarsesion(self):
+        self.ventana.destroy()
+        VentanaInicioSesion()
+        
+        listaarchivo.clear()
+        listaparte.clear()
+        listanombreplanta.clear()
+        listanombrecientifico.clear()
+        listapuntaje.clear()
 
     def closewindow(self):
         self.ventana.destroy()
 
 Aplicacion = VentanaInicioSesion()
+
+def procesoHacer(num_fotos):
+    API_KEY = "2b10M05lpZpn9sMMrQmb8xeLlu" # Set you API_KEY here
+    api_endpoint = f"https://my-api.plantnet.org/v2/identify/all?api-key={API_KEY}"
+    
+    if(num_fotos == 1):
+      ruta1 = listaarchivo[0]
+      image_path_1 = ruta1
+      image_data_1 = open(image_path_1, 'rb')
+      
+      data = {
+        'organs': []
+      }
+      
+      files = [
+        ('images', (image_path_1, image_data_1))
+      ]
+    
+    elif(num_fotos == 2):
+      ruta1 = listaarchivo[0]
+      ruta2 = listaarchivo[1]
+
+      image_path_1 = ruta1
+      image_data_1 = open(image_path_1, 'rb')
+
+      image_path_2 = ruta2
+      image_data_2 = open(image_path_2, 'rb')
+
+      data = {
+        'organs': []
+      }
+
+      files = [
+        ('images', (image_path_1, image_data_1)),
+        ('images', (image_path_2, image_data_2))
+      ]
+    elif(num_fotos == 3):
+      ruta1 = listaarchivo[0]
+      ruta2 = listaarchivo[1]
+      ruta3 = listaarchivo[2]
+
+      image_path_1 = ruta1
+      image_data_1 = open(image_path_1, 'rb')
+
+      image_path_2 = ruta2
+      image_data_2 = open(image_path_2, 'rb')
+
+      image_path_3 = ruta3
+      image_data_3 = open(image_path_3, 'rb')
+
+      data = {
+        'organs': []
+      }
+
+      files = [
+        ('images', (image_path_1, image_data_1)),
+        ('images', (image_path_2, image_data_2)),
+        ('images', (image_path_3, image_data_3))
+      ]
+    elif(num_fotos == 4):
+      ruta1 = listaarchivo[0]
+      ruta2 = listaarchivo[1]
+      ruta3 = listaarchivo[2]
+      ruta4 = listaarchivo[3]
+
+      image_path_1 = ruta1
+      image_data_1 = open(image_path_1, 'rb')
+
+      image_path_2 = ruta2
+      image_data_2 = open(image_path_2, 'rb')
+
+      image_path_3 = ruta3
+      image_data_3 = open(image_path_3, 'rb')
+
+      image_path_4 = ruta4
+      image_data_4 = open(image_path_4, 'rb')
+
+      data = {
+        'organs': []
+      }
+
+      files = [
+        ('images', (image_path_1, image_data_1)),
+        ('images', (image_path_2, image_data_2)),
+        ('images', (image_path_3, image_data_3)),
+        ('images', (image_path_4, image_data_4))
+      ]
+    elif(num_fotos == 5):
+      ruta1 = listaarchivo[0]
+      ruta2 = listaarchivo[1]
+      ruta3 = listaarchivo[2]
+      ruta4 = listaarchivo[3]
+      ruta5 = listaarchivo[4]
+
+      image_path_1 = ruta1
+      image_data_1 = open(image_path_1, 'rb')
+
+      image_path_2 = ruta2
+      image_data_2 = open(image_path_2, 'rb')
+
+      image_path_3 = ruta3
+      image_data_3 = open(image_path_3, 'rb')
+
+      image_path_4 = ruta4
+      image_data_4 = open(image_path_4, 'rb')
+
+      image_path_5 = ruta5
+      image_data_5 = open(image_path_5, 'rb')
+
+      data = {
+        'organs': []
+      }
+
+      files = [
+        ('images', (image_path_1, image_data_1)),
+        ('images', (image_path_2, image_data_2)),
+        ('images', (image_path_3, image_data_3)),
+        ('images', (image_path_4, image_data_4)),
+        ('images', (image_path_5, image_data_5))
+      ]
+
+    req = requests.Request('POST', url=api_endpoint, files=files, data=data)
+    prepared = req.prepare()
+
+    s = requests.Session()
+    response = s.send(prepared)
+    json_result = json.loads(response.text)
+
+    pprint(response.status_code)
+
+    for each in json_result['results']:
+      if(len(each['species']['commonNames']) == 0):
+        listanombreplanta.append("Nombre no identificado")
+      else:
+        listanombreplanta.append(each['species']['commonNames'][0])
+
+      listanombrecientifico.append(each['species']['scientificName'])
+      listapuntaje.append(each['score'])
+
+    print(listanombreplanta)
+    print(listanombrecientifico)
+    print(listapuntaje)
