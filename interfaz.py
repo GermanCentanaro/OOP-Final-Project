@@ -18,7 +18,7 @@ class VentanaInicioSesion:
         self.definir_ventana()
 
     def run(self):
-        self.ventana_inicio.mainloop()
+        self.ventana_inicio.mainloop() #el objeto aplicación ejecuta esto que abre e inicia esta ventana
 
     def definir_ventana(self):
         ancho_ventana = 500
@@ -70,18 +70,18 @@ class VentanaInicioSesion:
         elif(contraseña == ""):
             self.infolbl['text'] = "Ingrese una contraseña"
         else:
-            user = Usuario(None, nombre, contraseña)
-            x = user.Iniciar(nombre, contraseña)
+            user = Usuario(None, nombre, contraseña) #se crea un objeto usuario
+            x = user.Iniciar(nombre, contraseña) #se asigna a la variable x el valor que retorna el metodo iniciar de dicho objeto
             if(x == False):
                 self.infolbl['text'] = "Usuario no registrado, vuelva a intentarlo"
             else:
                 print("Ingreso realizado correctamente.\n")
-                self.ventana_inicio.destroy()
-                VentanaEjecucion()
+                self.ventana_inicio.destroy() #cierra la ventana inicio sesión
+                VentanaEjecucion() #abre la ventana principal
 
     def registro(self):
-        self.ventana_inicio.destroy()
-        VentanaRegistrarse()
+        self.ventana_inicio.destroy() #cierra la ventana inicio sesion
+        VentanaRegistrarse() #abre la ventana de registro
 
 class VentanaRegistrarse:
     def __init__(self):
@@ -95,6 +95,7 @@ class VentanaRegistrarse:
         ancho_ventana = 500
         alto_ventana = 300
 
+        #esto sitúa la ventana en el centro de la pantalla
         x_ventana = self.ventana_reg.winfo_screenwidth() // 2 - ancho_ventana // 2
         y_ventana = self.ventana_reg.winfo_screenheight() // 2 - alto_ventana // 2
 
@@ -145,13 +146,13 @@ class VentanaRegistrarse:
         elif(contraseña == ""):
             self.infolbl['text'] = "Ingrese una contraseña"
         else:
-            user = Usuario(name, nombre, contraseña)
-            user.Registrar(nombre, contraseña)
+            user = Usuario(name, nombre, contraseña) #se crea un objeto user con los parametros dados anteriormente
+            user.Registrar(nombre, contraseña) #se realiza el proceso del metodo Registrar
             self.infolbl['text'] = "Fue registrado exitosamente"
 
     def volver(self):
-        self.ventana_reg.destroy()
-        VentanaInicioSesion()
+        self.ventana_reg.destroy() #cierra la ventana registro
+        VentanaInicioSesion() #abre la ventana de inicio de sesión
 
 class VentanaEjecucion:
     def __init__(self):
@@ -230,15 +231,16 @@ class VentanaEjecucion:
     def abrir_archivo(self):
         if(self.cont < 5):
             if(self.lista_desplegable.get() != ""):
+                #esto va a abrir el explorador de archivos y del archivo que se seleccione guarda la ruta, solo permite archivos jpg,png y jpeg
                 archivo = filedialog.askopenfilename(title="Abrir Archivo", initialdir = "C:/", filetypes = (("Archivos jpg", "*.jpg"), ("Archivos png", "*.png"), ("Archivos jpeg", "*.jpeg")))
                 if(archivo != ""):
                     parte= self.lista_desplegable.get()
-                    self.reg = Registro()
-                    foto = Foto(archivo)
-                    self.reg.añadir(foto)
+                    self.reg = Registro() #se crea el objeto registro
+                    foto = Foto(archivo) #se crea el objeto foto con la ruta tomada anteriormente
+                    self.reg.añadir(foto) #al registro se le añade la foto
                     listaarchivo.append(archivo)
                     listaparte.append(parte)
-                    self.cont = self.cont + 1
+                    self.cont = self.cont + 1 #lleva el conteo de las fotos ingresadas
                     self.contadorlabel['text'] = "Fotos ingresadas: "+ str(self.cont)
             else:
                 self.infolabel['text'] = "Debe ingresar la parte de la planta"
@@ -249,7 +251,7 @@ class VentanaEjecucion:
         if(self.cont == 0):
             self.infolabel['text'] = "No ha ingresado ninguna foto"
         else:
-            procesoHacer(self.cont)
+            procesoHacer(self.cont) #realiza todo el proceso de la API
             res = ("El resultado mas cercano es: "+listanombreplanta[0]+
             "\nNombre cientifico: "+listanombrecientifico[0]+ "\n Porcentaje:" +(str(listapuntaje[0]*100))+
             " %\n\nSegundo resultado: "+listanombreplanta[1]+ "\nNombre cientifico: "+listanombrecientifico[1]+ 
@@ -264,13 +266,13 @@ class VentanaEjecucion:
             listaresultados.append(res2)
             print(listaresultados)
             self.reg.resultado = res
-            self.resultadolbl['text'] = self.reg.resultado
+            self.resultadolbl['text'] = self.reg.resultado #imprime los resultados claros de la API
             imprimir = ""
 
             for l in listaresultados:
-              imprimir = imprimir+l+"\n"
+              imprimir = imprimir+l+"\n\n"
             
-            self.historial['text'] = imprimir
+            self.historial['text'] = imprimir #imprime la info del historial
 
     def cerrarsesion(self):
         self.ventana.destroy()
@@ -285,8 +287,9 @@ class VentanaEjecucion:
     def closewindow(self):
         self.ventana.destroy()
 
-Aplicacion = VentanaInicioSesion()
+Aplicacion = VentanaInicioSesion() #se crea el objeto aplicación que iniciará la interfaz gráfica
 
+ #este metodo global se usa para llamar a la API y procesar la foto
 def procesoHacer(num_fotos):
     API_KEY = "2b10M05lpZpn9sMMrQmb8xeLlu" # Set you API_KEY here
     api_endpoint = f"https://my-api.plantnet.org/v2/identify/all?api-key={API_KEY}"
@@ -416,14 +419,14 @@ def procesoHacer(num_fotos):
 
     pprint(response.status_code)
 
-    for each in json_result['results']:
+    for each in json_result['results']: #se usa para manipular y dar un resultado conciso de lo dado por la API
       if(len(each['species']['commonNames']) == 0):
-        listanombreplanta.append("Nombre no identificado")
+        listanombreplanta.append("Nombre no identificado") #si encuentra una planta sin nombre común imprime un nombre no identificado
       else:
-        listanombreplanta.append(each['species']['commonNames'][0])
+        listanombreplanta.append(each['species']['commonNames'][0]) #sino guarda el nombre de la planta
 
-      listanombrecientifico.append(each['species']['scientificName'])
-      listapuntaje.append(each['score'])
+      listanombrecientifico.append(each['species']['scientificName']) #guarda el nombre taxonomico de la planta
+      listapuntaje.append(each['score']) #guarda el porcentaje de acierto de la API
 
     print(listanombreplanta)
     print(listanombrecientifico)
