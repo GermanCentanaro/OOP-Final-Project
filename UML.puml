@@ -1,40 +1,27 @@
 @startuml
-Class Usuario{
-    +Ingresar()
+class Usuario {
+  name: String
+  nombre: String
+  contraseña: String
+  Iniciar(String nombre, String contraseña): boolean
+  Registrar(String nombre, String contraseña): None
 }
 
-Class Foto{
-    +Ingresar()
-    +Cancelar()
+class Foto {
+  ruta: String
+  next: Foto
+  data: String
+  mostrar(): None
 }
 
-Class Programa{
-    +lista:List[foto]
-    +Clasificar(Planta)
-    +Cancelar()
+class Registro {
+  resultado: String
+  fotoI: Foto
+  fotoU: Foto
+  añadir(Foto foto): None
+  mostrar(): None
 }
 
-Class Planta{
-    +color_petalo:str
-    +largo_petalo:str
-    +color_tallo:str
-    +largo_tallo:str
-    +color:str
-    +nombre_planta:str
-    +color_hojas:str
-    +fruto:str
-    +describir():str
-}
-
-Class Historial{
-    +nombre_planta:str
-    +fotos:list[Foto]
-}
-
-Usuario"1" -- Foto:se ingresa en
-Planta -- Programa
-Programa"1..*" *-- "1"Foto
-Historial *-- Planta:se guarda en
-Usuario --* Historial:tiene acceso
-
+Registro o-- Foto
+Usuario --* Registro
 @enduml
